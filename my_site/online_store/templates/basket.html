@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    {% if selected_products %}
+            {% for product in selected_products %}
+                <div>
+                    {{ product.name }} - {{ product.price }} грн
+                    <input type="number" name="quantity{{ product.id }}" min="1" max="{{ product.quantity }}" style="width: 40px;" value="{{ quantity }}">
+                    <input type="hidden" name="product_id{{ product.id }}" value="{{ product.id }}">
+                    <form action="{% url 'basket' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="remove_product_id" value="{{ product.id }}">
+                        <input type="submit" value="Видалити">
+                    </form>
+            {% endfor %}
+        <p>Загальна сума: {{ total_sum }} грн</p>
+                </div>
+
+        <form class="cart-form" action="{% url 'confirm_page' %}" method="post">
+            {% csrf_token %}
+            <label for="name">Ім'я:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="phone">Номер телефону:</label>
+            <input type="tel" id="phone" name="phone" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <input type="submit" value="Оформити замовлення" name="submit_order">
+        </form>
+<div class="form-container">
+        <form action="{% url 'basket' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="continue_shopping" value="1">
+            <button type="submit">Продовжити покупки</button>
+        </form>
+     </div>
+    {% else %}
+        <p class="empty-cart-message">Кошик пустий. Покладіть товари в кошик, щоб продовжити.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+

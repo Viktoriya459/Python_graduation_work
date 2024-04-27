@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <ul class="product-list">
+
+        {% for p in prod %}
+       <li class="product-item">
+               {% if p.photo%}
+           <div class="product-image">
+        <p><img class="img-article" src="{{p.photo.url}}"></p>
+        </div>
+               {% endif %}
+            <div class="item-details">
+                <h2 class="product-name">{{ p.name }}</h2>
+                <p class="product-description">{{ p.description }}</p>
+                <p class="product-size">Розмір: {{ p.size }}</p>
+                <div class="center-align">
+                <form action="{% url 'basket' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ p.id }}">
+                    <input type="submit" value="Придбати за {{p.price}} грн" class="button-page">
+                </form>
+                </div>
+            </div>
+           </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

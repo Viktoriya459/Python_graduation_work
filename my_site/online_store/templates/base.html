@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html>
+<head>
+    <title>{{ title }}</title>
+    <link type="text/css" href="{% static 'css/styles.css'%}" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="shortcut icon" href="{% static 'images/p.png' %}" type="image/x-icon"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<table class="table-page" border=0 cellpadding="0" cellspacing="0">
+<tr><td valign=top>
+{% block mainmenu %}
+
+<div class="header">
+
+		<ul id="mainmenu" class="mainmenu">
+		<li class="logo"><a href="/"><div class="logo"></div></a></li>
+
+{% for m in menu %}
+			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+{% endfor %}
+{% if user.is_authenticated %}
+<li><a href="{% url 'client_page' %}">{{user.username}}</a> | <a href="{% url 'logout' %}">Вийти</a></li>
+{% else %}
+<li><a href="{% url 'register' %}">Реєстрація</a> | <a href="{% url 'login' %}">Увійти</a></li>
+{% endif %}
+		</ul>
+	<div class="clear"></div>
+</div>
+{% endblock %}
+
+<table class="table-content" border=0 cellpadding="0" cellspacing="0">
+<tr>
+<!-- Sidebar слева -->
+<td valign="top" class="left-chapters">
+	<form class="form-inline mt-2 mt-md-0" method="get">
+    				<input name="q" class="form-control custom-input-style mr-sm-2" type="text" placeholder="Пошук" aria-label="Search">
+		<div class="search-container">
+					<input type="submit" value="Знайти" class="button-style">
+		</div>
+	</form>
+
+<ul id="leftchapters">
+{% if cat_selected == 0 %}
+		<li class="selected">Категорії товарів:</li>
+{% else %}
+		<li><a href="{% url 'home' %}">Категорії товарів:</a></li>
+{% endif %}
+
+{% for c in goods %}
+		<li><a href="{{ c.get_absolute_url }}">{{c.name}}</a></li>
+{% endfor %}
+</ul>
+</td>
+
+<!-- Конец Sidebar'а -->
+<td valign="top" class="content">
+	<!-- Хлебные крошки -->
+	{% block breadcrumbs %}
+	{% endblock %}
+
+<!-- Блок контента -->
+<div class="content-text">
+{% block content %}
+{% endblock %}
+</div>
+<!-- Конец блока контента -->
+
+
+</td></tr></table></td></tr>
+<!-- Footer -->
+<tr><td valign=top>
+	<div id="footer">
+		<p>&copy; 2023 Часткове або повне копіювання інформації з цього сайту для поширення на інших ресурсах, зокрема й паперових, суворо заборонене.</p>
+	</div>
+</td></tr></table>
+<!-- Конец footer'а и страницы -->
+</body>
+</html>

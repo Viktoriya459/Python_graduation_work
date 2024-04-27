@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="thank-you-page">
+    <h2 class="thank-you-heading">Дякуємо що обрали наш магазин!</h2>
+    <p class="thank-you-message">Ми цінуємо ваш вибір і будемо раді допомогти вам у майбутньому.</p>
+    <img src="{% static 'images/thank-you-image.jpg' %}" alt="Thank You Image" class="thank-you-image">
+    <a href="{% url 'home' %}" class="continue-shopping-link">Продовжити покупки</a>
+  </div>
+
+{% endblock %}

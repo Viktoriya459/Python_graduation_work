@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+<h1>{{ title }}</h1>
+
+{% block content %}
+<div class="article_panel">
+    {% for p in goods %}
+        <h4 class="centered">Категорія: {{ p.name }}</h4>
+    {% endfor %}
+</div>
+
+<div class="product-grid">
+
+    {% for p in prod %}
+    <div class="product-tile">
+            {% if p.photo%}
+        <p><img class="img-article home" src="{{p.photo.url}}"></p>
+    {% endif %}
+        <div class="product-content">
+    <h2>{{ p.name }}</h2>
+    <p>Розмір: {{ p.size }}</p>
+    <p> Ціна:{{ p.price }} грн</p>
+</div>
+        <div class="clear"></div>
+        <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Переглянути товар</a></p>
+     </div>
+        {% endfor %}
+</div>
+{% if prod.has_other_pages %}
+<nav class="list-pages">
+    <ul>
+        {% if prod.has_previous %}
+            <li class="page-num">
+                <a href="?page=1">&lt;</a>
+            </li>
+        {% endif %}
+        {% for p in prod.paginator.page_range %}
+            {% if prod.number == p %}
+                <li class="page-num page-num-selected">{{ p }}</li>
+            {% elif p >= prod.number|add:"-2" and p <= prod.number|add:"2" %}
+                <li class="page-num">
+                    <a href="?page={{ p }}">{{ p }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+        {% if prod.has_next %}
+            <li class="page-num">
+                <a href="?page={{ prod.next_page_number }}">&gt;</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

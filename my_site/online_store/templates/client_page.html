@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<div class="heading">
+    <h1>Кабінет клієнта</h1>
+  <p class="contact-subheading">Привіт, {{ request.user.username }}!</p>
+   {% if orders %}
+    <h3>Ваші замовлення:</h3>
+    {% for order in orders %}
+        <h3>Order: {{ order.id }}</h3>
+        <p>Имя: {{ order.name }}</p>
+        <p>Телефон: {{ order.phone }}</p>
+        <p>Email: {{ order.email }}</p>
+        <p>Продукты: {{ order.products }}</p>
+        <p>Сумма заказа: {{ order.total_sum }}</p>
+        <hr>
+    {% endfor %}
+        {% else %}
+        <p class="contact-subheading">У вас немає поки що замовлень.</p>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}
